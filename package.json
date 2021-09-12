@@ -1,0 +1,22 @@
+{
+  "name": "somtoday-tui",
+  "version": "0.0.1",
+  "description": "A TUI to communicate with the somtoday API",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.js"
+  },
+  "keywords": [
+    "somtoday",
+    "terminal"
+  ],
+  "author": "Nicky",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "node-fetch": "^3.0.0",
+    "prompt-sync": "^4.2.0"
+  }
+}
