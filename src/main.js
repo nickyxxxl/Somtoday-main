@@ -42,7 +42,7 @@ let schoolUUID = 'b6256752-bbcf-42e0-8c7c-9e4643f0e827';
 let passwd = 'A1b2c3d4!';
 let username = '4403';
 
-//returns response object
+//login and get an access token
 async function Authenticate(schoolUUID, username, password) {
 
 const body = {
@@ -69,11 +69,34 @@ const response = await fetch('https://somtoday.nl/oauth2/token', {
 	headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 });
 const data = await response.json();
+return await data;
+}
 
+async function getSchedule(access_token, beginDate) {
+let endDate = '2021-09-14'
+let response
+try {
+    response = await fetch('https://api.somtoday.nl/rest/v1/afspraken', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Accept': "application/json"
+    //        'begindatum': beginDate,
+    //        'einddatum': endDate,
+    //        'sort': 'asc-id'
+        }
+    });
+} catch (error) {
+    console.error(error);
+}
+const data = await response.json();
 return await data;
 }
 
 //process response
-let tokens = await Authenticate(schoolUUID, username, passwd);
+let tokens = await Authenticate(schoolUUID, username, passwd)
 console.log(tokens);
+let date = '2021-09-13'
+let rooster = await getSchedule(tokens.access_token, date)
+console.log(rooster);
 
