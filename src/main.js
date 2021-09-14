@@ -39,7 +39,7 @@ console.log(scholenLijst[number]); //Augustinianum = 9
 
 //temp variables !!REMOVE BEFORE PUBLICATION!!
 let schoolUUID = 'b6256752-bbcf-42e0-8c7c-9e4643f0e827';
-let passwd = 'A1b2c3d4!';
+let passwd = '';
 let username = '4403';
 
 //login and get an access token
