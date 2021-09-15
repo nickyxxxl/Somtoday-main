@@ -42,6 +42,12 @@ let schoolUUID = 'b6256752-bbcf-42e0-8c7c-9e4643f0e827';
 let passwd = '';
 let username = '4403';
 
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
 //login and get an access token
 async function Authenticate(schoolUUID, username, password) {
 
@@ -72,16 +78,16 @@ const data = await response.json();
 return await data;
 }
 
-async function getSchedule(access_token, beginDate) {
-let endDate = '2021-09-14'
-let response
+//gets 'days' days of schedule starting from 'beginDate'
+async function getSchedule(access_token, beginDate, days) {
+const endDate = beginDate.addDays(days); 
+let response;
 try {
-    response = await fetch('https://api.somtoday.nl/rest/v1/afspraken', {
+    response = await fetch(`https://api.somtoday.nl/rest/v1/afspraken?begindatum=${beginDate.toISOString().split('T')[0]}&einddatum=${endDate.toISOString().split('T')[0]}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${access_token}`,
             'Accept': "application/json"
-    //        'begindatum': beginDate,
     //        'einddatum': endDate,
     //        'sort': 'asc-id'
         }
@@ -94,9 +100,9 @@ return await data;
 }
 
 //process response
-let tokens = await Authenticate(schoolUUID, username, passwd)
+let tokens = await Authenticate(schoolUUID, username, passwd);
 console.log(tokens);
-let date = '2021-09-13'
-let rooster = await getSchedule(tokens.access_token, date)
+const date = new Date();
+let rooster = await getSchedule(tokens.access_token, date, 1);
 console.log(rooster);
 
