@@ -1,5 +1,24 @@
 import fetch from 'node-fetch';
 
+//this should be built in
+Date.prototype.AddDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
+//convert JSON to encoded URL
+function JsonToUrl(object) {
+    var formBody = [];
+    for (let property in object) {
+        let encodedKey = encodeURIComponent(property);
+        let encodedValue = encodeURIComponent(object[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join('&');
+    return formBody;
+}
+
 //fetch scholen
 async function GetSchools() {
     const response = await fetch('https://servers.somtoday.nl/organisaties.json');
@@ -21,25 +40,6 @@ async function GetSchools() {
     }
 
     return await scholenLijst;
-}
-
-//this should be built in
-Date.prototype.AddDays = function(days) {
-    var date = new Date(this.valueOf());
-    date.setDate(date.getDate() + days);
-    return date;
-}
-
-//convert JSON to encoded URL
-function JsonToUrl(object) {
-    var formBody = [];
-    for (let property in object) {
-        let encodedKey = encodeURIComponent(property);
-        let encodedValue = encodeURIComponent(object[property]);
-        formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join('&');
-    return formBody;
 }
 
 //get an access token
@@ -85,11 +85,7 @@ async function GetSchedule(access_token, beginDate, days) {
     return await data;
 }
 
-function GetGrades(params) {
-    
-}
-
-async function GetStudentID(access_token) {
+async function GetStudentInfo(access_token) {
     let response;
     try {
         response = await fetch(`https://api.somtoday.nl/rest/v1/leerlingen`, {
@@ -128,4 +124,4 @@ async function RefreshToken(refresh_token) {
     return await data;
 }
 
-export { GetSchools, Authenticate, GetSchedule, RefreshToken, GetStudentID }
+export { GetSchools, Authenticate, GetSchedule, RefreshToken, GetStudentInfo}
