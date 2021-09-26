@@ -39,8 +39,16 @@ if (!creds) {
 
 let tokens = await api.Authenticate(schoolUUID, username, passwd);
 
-const curDate = new Date();
-let result = await api.GetSchedule(tokens.access_token,curDate,2);
+//gets monday's schedule on saturdays and sundays
+let curDate = new Date();
+if (curDate.getDay() == 6) { //saturday
+    curDate = curDate.AddDays(2)
+} else if (curDate.getDay() == 0){ //sunday
+    curDate = curDate.AddDays(1)
+}
+
+
+let result = await api.GetSchedule(tokens.access_token,curDate,1);
 
 //filters and formats output
 function RoosterCLI(rawRooster) {
